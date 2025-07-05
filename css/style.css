@@ -283,7 +283,7 @@ p {
 
 /* Hero Section */
 .hero {
-    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #2563eb 50%, #3b82f6 75%, #60a5fa 100%);
     color: var(--white);
     padding: 140px 0 80px;
     position: relative;
@@ -297,16 +297,43 @@ p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><circle cx="200" cy="200" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="800" cy="300" r="2" fill="rgba(255,255,255,0.1)"/><circle cx="400" cy="600" r="3" fill="rgba(255,255,255,0.1)"/><circle cx="900" cy="700" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
-    opacity: 0.3;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><defs><pattern id="circuit" patternUnits="userSpaceOnUse" width="100" height="100"><rect width="100" height="100" fill="none"/><path d="M20 20h60v60h-60z" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><circle cx="50" cy="50" r="3" fill="rgba(255,107,53,0.3)"/><path d="M0 50h20m80 0h20M50 0v20m0 80v20" stroke="rgba(255,255,255,0.08)" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(%23circuit)"/><polygon points="0,0 300,0 250,150 0,100" fill="rgba(255,107,53,0.05)"/><polygon points="900,300 1200,200 1200,500 800,450" fill="rgba(255,255,255,0.03)"/><circle cx="200" cy="150" r="40" fill="none" stroke="rgba(255,107,53,0.15)" stroke-width="2"/><circle cx="1000" cy="600" r="60" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/><rect x="600" y="100" width="80" height="80" fill="none" stroke="rgba(255,255,255,0.08)" stroke-width="1" transform="rotate(45 640 140)"/></svg>');
+    opacity: 0.4;
+}
+
+.hero::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 20%, rgba(255,107,53,0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 60%, rgba(255,255,255,0.05) 0%, transparent 50%),
+                radial-gradient(circle at 20% 80%, rgba(255,107,53,0.08) 0%, transparent 50%);
+    opacity: 0.6;
 }
 
 .hero-content {
     position: relative;
-    z-index: 2;
+    z-index: 3;
     text-align: center;
     max-width: 800px;
     margin: 0 auto;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.7; }
+}
+
+.hero::before {
+    animation: pulse 8s ease-in-out infinite;
 }
 
 .hero-subtitle {
@@ -319,6 +346,9 @@ p {
     font-size: 3rem;
     margin-bottom: var(--spacing-md);
     font-weight: 700;
+    color: var(--white);
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 0 20px rgba(255,255,255,0.1);
+    animation: float 6s ease-in-out infinite;
 }
 
 .hero-description {
@@ -333,6 +363,33 @@ p {
     gap: var(--spacing-md);
     justify-content: center;
     flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-buttons .btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.hero-buttons .btn:hover::before {
+    left: 100%;
+}
+
+.hero-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 }
 
 /* Section Styles */
