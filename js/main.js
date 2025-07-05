@@ -10,16 +10,17 @@ document.addEventListener('DOMContentLoaded', function() {
     initGallery();
     initScrollAnimations();
     initActiveNavLinks();
+    initStatsAnimation();
 });
 
 // Navigation Functions
 function initNavigation() {
     const navToggle = document.getElementById('nav-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navMenu = document.querySelector('.nav-menu');
+    const navLinks = document.querySelectorAll('.nav-menu a');
     
     // Toggle mobile menu
-    if (navToggle) {
+    if (navToggle && navMenu) {
         navToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
             
@@ -38,16 +39,18 @@ function initNavigation() {
     // Close mobile menu when clicking on a link
     navLinks.forEach(link => {
         link.addEventListener('click', function() {
-            navMenu.classList.remove('active');
-            const icon = navToggle.querySelector('i');
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
+            if (navMenu) {
+                navMenu.classList.remove('active');
+                const icon = navToggle.querySelector('i');
+                icon.classList.remove('fa-times');
+                icon.classList.add('fa-bars');
+            }
         });
     });
     
     // Close mobile menu when clicking outside
     document.addEventListener('click', function(e) {
-        if (!navMenu.contains(e.target) && !navToggle.contains(e.target)) {
+        if (navMenu && navToggle && !navMenu.contains(e.target) && !navToggle.contains(e.target)) {
             navMenu.classList.remove('active');
             const icon = navToggle.querySelector('i');
             icon.classList.remove('fa-times');
@@ -55,15 +58,13 @@ function initNavigation() {
         }
     });
     
-    // Add navbar background on scroll
+    // Add header background on scroll
     window.addEventListener('scroll', function() {
-        const navbar = document.querySelector('.navbar');
+        const header = document.querySelector('.header');
         if (window.scrollY > 50) {
-            navbar.style.backgroundColor = 'rgba(255, 255, 255, 0.98)';
-            navbar.style.backdropFilter = 'blur(10px)';
+            header.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.15)';
         } else {
-            navbar.style.backgroundColor = 'var(--white)';
-            navbar.style.backdropFilter = 'none';
+            header.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
         }
     });
 }
@@ -80,7 +81,7 @@ function initSmoothScrolling() {
             const targetElement = document.getElementById(targetId);
             
             if (targetElement) {
-                const offsetTop = targetElement.offsetTop - 80; // Account for fixed navbar
+                const offsetTop = targetElement.offsetTop - 100; // Account for fixed header
                 
                 window.scrollTo({
                     top: offsetTop,
@@ -90,8 +91,6 @@ function initSmoothScrolling() {
         });
     });
 }
-
-
 
 // Gallery Functions
 function initGallery() {
@@ -215,7 +214,7 @@ function initScrollAnimations() {
         rootMargin: '0px 0px -50px 0px'
     };
     
-    const observer = new IntersectionObserver(function(entries) {
+    const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('animate-in');
@@ -224,37 +223,22 @@ function initScrollAnimations() {
     }, observerOptions);
     
     // Observe elements for animation
-    const animateElements = document.querySelectorAll('.product-card, .gallery-item, .about-text, .contact-item');
-    animateElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(30px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    const elementsToAnimate = document.querySelectorAll('.product-card, .industry-item, .feature, .contact-item');
+    elementsToAnimate.forEach(el => {
         observer.observe(el);
     });
-    
-    // Add animate-in styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .animate-in {
-            opacity: 1 !important;
-            transform: translateY(0) !important;
-        }
-    `;
-    document.head.appendChild(style);
 }
 
 // Active Navigation Links
 function initActiveNavLinks() {
-    const navLinks = document.querySelectorAll('.nav-link');
+    const navLinks = document.querySelectorAll('.nav-menu a');
     const sections = document.querySelectorAll('section[id]');
     
-    window.addEventListener('scroll', function() {
+    window.addEventListener('scroll', debounce(() => {
         let current = '';
-        
         sections.forEach(section => {
             const sectionTop = section.offsetTop - 100;
-            const sectionHeight = section.clientHeight;
-            
+            const sectionHeight = section.offsetHeight;
             if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
                 current = section.getAttribute('id');
             }
@@ -266,64 +250,62 @@ function initActiveNavLinks() {
                 link.classList.add('active');
             }
         });
+    }, 100));
+}
+
+
+
+// Stats Animation
+function initStatsAnimation() {
+    const statNumbers = document.querySelectorAll('.stat-number');
+    
+    const statsObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const statNumber = entry.target;
+                const finalNumber = statNumber.textContent;
+                const numericValue = parseInt(finalNumber.replace(/\D/g, ''));
+                
+                if (numericValue) {
+                    animateNumber(statNumber, numericValue, finalNumber);
+                }
+                
+                statsObserver.unobserve(statNumber);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    statNumbers.forEach(stat => {
+        statsObserver.observe(stat);
     });
 }
+
+// Animate Numbers
+function animateNumber(element, targetNumber, originalText) {
+    const duration = 2000;
+    const startTime = performance.now();
+    const suffix = originalText.replace(/\d/g, '');
+    
+    function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        const currentNumber = Math.floor(progress * targetNumber);
+        element.textContent = currentNumber + suffix;
+        
+        if (progress < 1) {
+            requestAnimationFrame(update);
+        } else {
+            element.textContent = originalText;
+        }
+    }
+    
+    requestAnimationFrame(update);
+}
+
+
 
 // Utility Functions
-
-// Scroll to Top Button
-function initScrollToTop() {
-    const scrollToTopBtn = document.createElement('button');
-    scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-    scrollToTopBtn.className = 'scroll-to-top';
-    scrollToTopBtn.setAttribute('aria-label', 'Scroll to top');
-    
-    // Styles
-    scrollToTopBtn.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 50px;
-        height: 50px;
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 1.2rem;
-        opacity: 0;
-        visibility: hidden;
-        transition: all 0.3s ease;
-        z-index: 1000;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    `;
-    
-    document.body.appendChild(scrollToTopBtn);
-    
-    // Show/hide on scroll
-    window.addEventListener('scroll', function() {
-        if (window.scrollY > 500) {
-            scrollToTopBtn.style.opacity = '1';
-            scrollToTopBtn.style.visibility = 'visible';
-        } else {
-            scrollToTopBtn.style.opacity = '0';
-            scrollToTopBtn.style.visibility = 'hidden';
-        }
-    });
-    
-    // Scroll to top on click
-    scrollToTopBtn.addEventListener('click', function() {
-        window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-        });
-    });
-}
-
-// Initialize scroll to top button
-document.addEventListener('DOMContentLoaded', initScrollToTop);
-
-// Performance optimization: Debounce scroll events
 function debounce(func, wait) {
     let timeout;
     return function executedFunction(...args) {
@@ -336,32 +318,33 @@ function debounce(func, wait) {
     };
 }
 
-// Apply debounce to scroll events
-const debouncedScrollHandler = debounce(function() {
-    // Your scroll handler code here
-}, 10);
-
-window.addEventListener('scroll', debouncedScrollHandler);
-
-// Lazy loading for images
+// Lazy Loading Images
 function initLazyLoading() {
-    const images = document.querySelectorAll('img[data-src]');
+    const lazyImages = document.querySelectorAll('img[data-src]');
     
-    const imageObserver = new IntersectionObserver(function(entries, observer) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                observer.unobserve(img);
-            }
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.src = img.dataset.src;
+                    img.classList.remove('lazy');
+                    imageObserver.unobserve(img);
+                }
+            });
         });
-    });
-    
-    images.forEach(img => {
-        imageObserver.observe(img);
-    });
+        
+        lazyImages.forEach(img => {
+            imageObserver.observe(img);
+        });
+    } else {
+        // Fallback for older browsers
+        lazyImages.forEach(img => {
+            img.src = img.dataset.src;
+            img.classList.remove('lazy');
+        });
+    }
 }
 
-// Initialize lazy loading
+// Initialize lazy loading on page load
 document.addEventListener('DOMContentLoaded', initLazyLoading); 

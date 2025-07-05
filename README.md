@@ -58,8 +58,8 @@ nuvyacorporation/
 Edit the following files to update your company details:
 
 **index.html, products.html, gallery.html:**
-- Replace placeholder phone numbers: `+91 XXX XXX XXXX`
-- Update email: `info@nuvyacorporation.com`
+- Replace placeholder phone numbers: `+91 9998181876`
+- Update email: `sales@nuvyacorporation.com`
 - Modify address details
 - Update social media links
 
@@ -74,7 +74,7 @@ Edit `css/style.css` - look for these CSS variables:
 ```
 
 ### 3. Replace Images
-- **Logo**: Replace `images/logo/nuvya-logo.png` with your company logo
+- **Logo**: Using `assets/Nuvya Logo.jpg` as the company logo
 - **Products**: Replace images in `images/products/` folder
 - **Gallery**: Replace images in `images/gallery/` folder
 - **About**: Replace `images/about/company-overview.jpg`
@@ -87,7 +87,7 @@ Edit `css/style.css` - look for these CSS variables:
 ### 5. Contact Information
 The contact section displays static company information:
 - Update your actual phone number, email, and address
-- Modify business hours as needed
+- Modify business hours as needed: Mon to Sat: 9:30 AM - 6:30 PM
 - Add additional contact methods if required
 
 ## 📱 Mobile Optimization
