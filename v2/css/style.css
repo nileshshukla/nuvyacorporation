@@ -834,6 +834,13 @@ section {
     color: rgba(255, 255, 255, 0.6);
 }
 
+.developer-credit {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: var(--spacing-sm);
+    font-style: italic;
+}
+
 /* Utility Classes */
 .text-center {
     text-align: center;
