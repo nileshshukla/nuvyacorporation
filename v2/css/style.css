@@ -516,6 +516,10 @@ section {
     margin-bottom: var(--spacing-xxl);
 }
 
+.about-intro p {
+    text-align: justify;
+}
+
 .about-intro h3 {
     color: var(--primary-color);
     margin-bottom: var(--spacing-lg);
@@ -528,6 +532,7 @@ section {
     color: var(--dark-gray);
     line-height: 1.8;
     margin-bottom: var(--spacing-lg);
+    text-align: justify;
 }
 
 .about-grid {
@@ -588,6 +593,7 @@ section {
     color: var(--text-muted);
     line-height: 1.7;
     margin-bottom: var(--spacing-md);
+    text-align: justify;
 }
 
 .about-card p:last-child {
