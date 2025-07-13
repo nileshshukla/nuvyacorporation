@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initActiveNavLinks();
     initStatsAnimation();
+    initPartnersCarousel();
 });
 
 // Navigation Functions
@@ -347,4 +348,101 @@ function initLazyLoading() {
 }
 
 // Initialize lazy loading on page load
-document.addEventListener('DOMContentLoaded', initLazyLoading); 
+document.addEventListener('DOMContentLoaded', initLazyLoading);
+
+// Partners Carousel Functions
+function initPartnersCarousel() {
+    const partnersCarousel = document.querySelector('.partners-carousel');
+    const partnersTrack = document.querySelector('.partners-track');
+    
+    if (!partnersCarousel || !partnersTrack) return;
+    
+    // Add hover effects to pause/resume animation
+    partnersCarousel.addEventListener('mouseenter', function() {
+        partnersTrack.style.animationPlayState = 'paused';
+    });
+    
+    partnersCarousel.addEventListener('mouseleave', function() {
+        partnersTrack.style.animationPlayState = 'running';
+    });
+    
+    // Add touch support for mobile devices
+    let startX = 0;
+    let currentTranslateX = 0;
+    let isDragging = false;
+    
+    partnersCarousel.addEventListener('touchstart', function(e) {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        partnersTrack.style.animationPlayState = 'paused';
+    });
+    
+    partnersCarousel.addEventListener('touchmove', function(e) {
+        if (!isDragging) return;
+        
+        const currentX = e.touches[0].clientX;
+        const diff = currentX - startX;
+        currentTranslateX = diff;
+        
+        // Apply transform to move the carousel
+        partnersTrack.style.transform = `translateX(calc(-50% + ${currentTranslateX}px))`;
+    });
+    
+    partnersCarousel.addEventListener('touchend', function() {
+        isDragging = false;
+        
+        // Snap back to original position with smooth transition
+        partnersTrack.style.transition = 'transform 0.3s ease';
+        partnersTrack.style.transform = '';
+        
+        // Resume animation after a brief delay
+        setTimeout(() => {
+            partnersTrack.style.transition = '';
+            partnersTrack.style.animationPlayState = 'running';
+        }, 300);
+    });
+    
+    // Add intersection observer to pause animation when not visible
+    if ('IntersectionObserver' in window) {
+        const carouselObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    partnersTrack.style.animationPlayState = 'running';
+                } else {
+                    partnersTrack.style.animationPlayState = 'paused';
+                }
+            });
+        }, {
+            threshold: 0.1
+        });
+        
+        carouselObserver.observe(partnersCarousel);
+    }
+    
+    // Add accessibility features
+    const partnerLogos = document.querySelectorAll('.partner-logo');
+    partnerLogos.forEach((logo, index) => {
+        // Add tabindex for keyboard navigation
+        logo.setAttribute('tabindex', '0');
+        logo.setAttribute('role', 'button');
+        logo.setAttribute('aria-label', `Partner logo ${index + 1}`);
+        
+        // Add keyboard support
+        logo.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                // Focus effect on keyboard interaction
+                this.style.transform = 'translateY(-5px) scale(1.05)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            }
+        });
+    });
+    
+    // Add performance optimization for reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        partnersTrack.style.animation = 'none';
+        partnersCarousel.style.overflow = 'auto';
+    }
+} 
