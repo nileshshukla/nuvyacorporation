@@ -616,6 +616,7 @@ section {
 
 .why-us-card {
     border-left: 4px solid var(--secondary-color);
+    text-align: justify;
 }
 
 .about-features {
