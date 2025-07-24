@@ -212,11 +212,16 @@ p {
 .logo-section {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-md);
 }
 
-.logo {
+.logo-circular {
     height: 50px;
+    width: auto;
+}
+
+.logo-text {
+    height: 40px;
     width: auto;
 }
 
@@ -232,6 +237,14 @@ p {
     font-size: 0.85rem;
     margin: 0;
     font-style: italic;
+}
+
+.brand-info .brand-tagline {
+    color: var(--secondary-color);
+    font-size: 0.8rem;
+    margin: 2px 0 0 0;
+    font-style: normal;
+    font-weight: 600;
 }
 
 .nav-menu {
@@ -597,7 +610,7 @@ section {
 }
 
 .about-card p {
-    color: var(--text-muted);
+    color: var(--dark-gray);
     line-height: 1.7;
     margin-bottom: var(--spacing-md);
     text-align: justify;
@@ -1170,7 +1183,6 @@ section {
     padding: 80px 0;
     background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     overflow: hidden;
-    display: none; /* Hidden via CSS */
 }
 
 .partners .section-header {
