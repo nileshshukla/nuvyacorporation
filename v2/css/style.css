@@ -221,7 +221,7 @@ p {
 }
 
 .logo-text {
-    height: 40px;
+    height: 55px;
     width: auto;
 }
 
@@ -538,7 +538,7 @@ section {
 }
 
 .about-intro h3 {
-    color: var(--primary-color);
+    color: var(--black);
     margin-bottom: var(--spacing-lg);
     font-size: 2.5rem;
     font-family: var(--font-family);
