@@ -1,0 +1,36 @@
+=== NUVYA CORPORATION - GODADDY CPANEL UPLOAD INSTRUCTIONS ===
+
+Your website is now ready for GoDaddy cPanel upload!
+
+📁 UPLOAD THESE FILES & FOLDERS:
+Upload ALL contents of the v2/ directory to your GoDaddy public_html folder:
+
+✅ home.html (main website file)
+✅ index.html (redirect file for compatibility)
+✅ .htaccess (hosting optimization)
+✅ categories/ (folder with all product pages)
+✅ css/ (folder with stylesheets)
+✅ js/ (folder with JavaScript files)
+✅ images/ (folder with all optimized images)
+
+🚀 UPLOAD STEPS:
+1. Login to your GoDaddy hosting cPanel
+2. Open File Manager
+3. Navigate to public_html folder
+4. Upload all files and folders from the v2/ directory
+5. Your website will be live at: yourdomain.com
+
+📄 FILE DETAILS:
+- home.html = Your main website (required by your specification)
+- index.html = Automatic redirect to home.html (for compatibility)
+- .htaccess = Performance optimization for GoDaddy servers
+
+🔗 NAVIGATION:
+- Main site: yourdomain.com (redirects to home.html)
+- Direct access: yourdomain.com/home.html
+- Product pages: yourdomain.com/categories/[product-name].html
+
+✅ All internal links have been updated to work with home.html
+✅ All images are optimized and only used files included
+✅ Ready for production deployment!
+
