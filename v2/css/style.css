@@ -1261,12 +1261,11 @@ section {
     width: auto;
     height: auto;
     object-fit: contain;
-    filter: grayscale(100%);
-    transition: filter 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .partner-logo:hover img {
-    filter: grayscale(0%);
+    transform: scale(1.05);
 }
 
 .partner-type {
